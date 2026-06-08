@@ -150,7 +150,35 @@
   .footer b{color:var(--cyan)}
   .demo-tag{position:fixed;right:14px;bottom:14px;font-size:10px;letter-spacing:1.5px;color:var(--txt-mute);background:var(--panel);border:1px solid var(--line);padding:6px 12px;border-radius:20px}
 
-  @media(max-width:1080px){.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.search{width:200px}}
+  /* ===== Centro de monitoreo (config) ===== */
+  .config{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+  .cfg-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .cfg-card h3{margin:0 0 2px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+  .cfg-card h3 .tag{font-size:10px;font-weight:800;color:var(--navy);background:var(--cyan);padding:2px 9px;border-radius:20px;letter-spacing:.5px}
+  .cfg-card .sub{font-size:12px;color:var(--txt-mute);margin-bottom:12px}
+  .cfg-form{display:flex;gap:8px;flex-wrap:wrap}
+  .cfg-form select,.cfg-form input{background:var(--panel-2);border:1px solid var(--line);color:var(--txt);border-radius:9px;padding:9px 11px;font-size:13px;font-family:inherit;outline:none}
+  .cfg-form input{flex:1;min-width:150px}
+  .cfg-form input:focus,.cfg-form select:focus{border-color:var(--cyan)}
+  .cfg-form .add{background:var(--naranja);border:none;color:#fff;font-weight:700;border-radius:9px;padding:9px 18px;cursor:pointer;font-size:13px;font-family:"Montserrat"}
+  .cfg-form .add:hover{filter:brightness(1.1)}
+  .chips-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .chip-term{display:inline-flex;align-items:center;gap:7px;background:var(--panel-2);border:1px solid var(--line);border-radius:20px;padding:5px 7px 5px 5px;font-size:13px}
+  .chip-term b{font-size:9px;text-transform:uppercase;letter-spacing:.6px;background:var(--azul);color:#fff;padding:3px 8px;border-radius:14px;font-weight:700}
+  .chip-term.tt-persona b{background:#8b5cf6}
+  .chip-term.tt-marca b{background:var(--naranja)}
+  .chip-term.tt-palabra b{background:var(--cyan);color:var(--navy)}
+  .chip-term .del,.src-row .del{cursor:pointer;color:var(--txt-mute);font-weight:800;width:18px;height:18px;display:grid;place-items:center;border-radius:50%;font-size:14px;line-height:1}
+  .chip-term .del:hover,.src-row .del:hover{background:var(--neg);color:#fff}
+  .src-list{display:flex;flex-direction:column;gap:8px;margin-top:14px;max-height:210px;overflow-y:auto;padding-right:4px}
+  .src-list::-webkit-scrollbar{width:7px}.src-list::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px}
+  .src-row{display:grid;grid-template-columns:28px 1fr auto 18px;align-items:center;gap:10px;background:var(--panel-2);border:1px solid var(--line);border-radius:9px;padding:7px 10px;font-size:13px}
+  .src-ico{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px}
+  .src-val{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .src-plat{font-size:11px;color:var(--txt-mute);white-space:nowrap}
+  .cfg-empty,.empty-kw{font-size:12px;color:var(--txt-mute);font-style:italic;padding:4px 0}
+
+  @media(max-width:1080px){.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.config{grid-template-columns:1fr}.search{width:200px}}
 </style>
 </head>
 <body>
@@ -180,6 +208,45 @@
     <div class="x" id="crisis-x">Reconocer</div>
   </div>
 
+  <!-- CENTRO DE MONITOREO -->
+  <section class="config">
+    <div class="cfg-card">
+      <h3>🎯 Términos de interés <span class="tag" id="term-count">0</span></h3>
+      <div class="sub">Temas, palabras clave, personas o marcas que quieres vigilar.</div>
+      <div class="cfg-form">
+        <select id="term-type" title="Tipo de término">
+          <option value="tema">Tema</option>
+          <option value="palabra">Palabra clave</option>
+          <option value="persona">Persona</option>
+          <option value="marca">Marca</option>
+        </select>
+        <input id="term-input" placeholder="Ej: Plan País, #Venezuela2026, nombre de un candidato…" />
+        <button class="add" id="term-add">+ Agregar</button>
+      </div>
+      <div class="chips-wrap" id="term-chips"></div>
+    </div>
+
+    <div class="cfg-card">
+      <h3>📡 Fuentes a monitorear <span class="tag" id="src-count">0</span></h3>
+      <div class="sub">Portales, RSS y cuentas de redes sociales que se rastrearán.</div>
+      <div class="cfg-form">
+        <select id="src-platform" title="Plataforma">
+          <option value="portal">🌐 Portal de noticias</option>
+          <option value="rss">📡 RSS</option>
+          <option value="x">𝕏 X (Twitter)</option>
+          <option value="instagram">📷 Instagram</option>
+          <option value="facebook">f Facebook</option>
+          <option value="tiktok">♪ TikTok</option>
+          <option value="threads">@ Threads</option>
+          <option value="telegram">✈ Telegram</option>
+        </select>
+        <input id="src-input" placeholder="https://elportal.com" />
+        <button class="add" id="src-add">+ Agregar</button>
+      </div>
+      <div class="src-list" id="src-list"></div>
+    </div>
+  </section>
+
   <!-- KPIs -->
   <section class="kpis">
     <div class="kpi k1">
@@ -200,7 +267,7 @@
     <div class="kpi k4">
       <div class="label">Fuentes activas</div>
       <div class="val" id="kpi-src">0</div>
-      <div class="delta up">X + portales de noticias</div>
+      <div class="delta up" id="kpi-src-d">—</div>
     </div>
   </section>
 
@@ -315,10 +382,29 @@ const NEG=[
 const rnd=a=>a[Math.floor(Math.random()*a.length)];
 const ri=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
 
+// ---------- Configuración de monitoreo (persistente) ----------
+const PLATFORMS={
+  portal:{label:'Portal de noticias',ico:'🌐',color:'linear-gradient(135deg,#0077C8,#00B4E3)',ph:'https://elportal.com'},
+  rss:{label:'RSS',ico:'📡',color:'#FF6D00',ph:'https://sitio.com/feed.xml'},
+  x:{label:'X (Twitter)',ico:'𝕏',color:'#1d1d1f',ph:'@usuario'},
+  instagram:{label:'Instagram',ico:'📷',color:'linear-gradient(135deg,#feda75,#d62976,#962fbf)',ph:'@usuario'},
+  facebook:{label:'Facebook',ico:'f',color:'#1877F2',ph:'facebook.com/pagina'},
+  tiktok:{label:'TikTok',ico:'♪',color:'#010101',ph:'@usuario'},
+  threads:{label:'Threads',ico:'@',color:'#101010',ph:'@usuario'},
+  telegram:{label:'Telegram',ico:'✈',color:'#229ED9',ph:'t.me/canal'}
+};
+const TERM_TYPES={tema:'Tema',palabra:'Palabra clave',persona:'Persona',marca:'Marca'};
+const DEFAULT_TERMS=[{text:'#Venezuela2026',type:'tema'},{text:'QSN Big Data',type:'marca'},{text:'Plan País',type:'tema'}];
+const DEFAULT_SOURCES=[{value:'lapatilla.com',platform:'portal'},{value:'@ElNacionalWeb',platform:'x'},{value:'efectococuyo.com/feed',platform:'rss'}];
+function loadCfg(k,def){try{const v=JSON.parse(localStorage.getItem(k));return Array.isArray(v)&&v.length?v:def;}catch(e){return def;}}
+let TERMS=loadCfg('qsn_terms',DEFAULT_TERMS);
+let SOURCES=loadCfg('qsn_sources',DEFAULT_SOURCES);
+function saveCfg(){localStorage.setItem('qsn_terms',JSON.stringify(TERMS));localStorage.setItem('qsn_sources',JSON.stringify(SOURCES));}
+
 // ---------- Estado ----------
 let totalMentions=ri(8200,12500);
 let series=[]; // {t, pos, neg, neu}
-let kwCounts={}; HASHTAGS.forEach(h=>kwCounts[h]=ri(120,900));
+let kwCounts={}; TERMS.forEach(t=>kwCounts[t.text]=ri(120,900));
 let activeAlerts=0;
 let rangeMin=60;
 let searchTerm='';
@@ -345,7 +431,9 @@ function renderKPIs(){
   sd.textContent=net>=0?'Percepción favorable':'Percepción adversa';
   sd.className='delta '+(net>=0?'up':'down');
   document.getElementById('kpi-alerts').textContent=activeAlerts;
-  document.getElementById('kpi-src').textContent=PORTALES.length+1; // portales + X
+  document.getElementById('kpi-src').textContent=SOURCES.length;
+  const plats=[...new Set(SOURCES.map(s=>s.platform))].length;
+  document.getElementById('kpi-src-d').textContent=plats?`${plats} plataforma${plats>1?'s':''} conectada${plats>1?'s':''}`:'Agrega fuentes para monitorear';
   document.getElementById('kpi-total-d').textContent=pct(ri(3,14)+Math.random());
 }
 
@@ -394,40 +482,50 @@ function renderDonut(){
 
 // ---------- Keywords ----------
 function renderKW(){
-  const arr=Object.entries(kwCounts).sort((a,b)=>b[1]-a[1]).slice(0,7);
-  const max=arr[0][1];
-  document.getElementById('kw').innerHTML=arr.map(([k,v],i)=>{
-    const isNeg=['#Oposición','#Economía','#Seguridad'].includes(k)&&i%2===0;
+  const el=document.getElementById('kw');
+  if(!TERMS.length){el.innerHTML='<div class="empty-kw">Agrega términos de interés para ver tendencias.</div>';return;}
+  const arr=TERMS.map(t=>[t.text,kwCounts[t.text]||0]).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const max=Math.max(1,arr[0][1]);
+  el.innerHTML=arr.map(([k,v],i)=>{
+    const isNeg=i%3===2;
     return `<div class="row ${isNeg?'neg':''}"><span>${k}</span><span class="bar"><i style="width:${(v/max*100).toFixed(0)}%"></i></span><span class="n">${v.toLocaleString('es-VE')}</span></div>`;
   }).join('');
 }
 
 // ---------- Feed ----------
 const elFeed=document.getElementById('feed');
+function pickSource(){
+  if(SOURCES.length && Math.random()<0.82) return rnd(SOURCES);
+  // respaldo simulado si no hay fuentes configuradas
+  return Math.random()<0.6?{value:rnd(HANDLES),platform:'x'}:{value:rnd(PORTALES),platform:'portal'};
+}
 function makeMention(forceNeg){
-  const isX=Math.random()<0.6;
+  const src=pickSource();
   const r=Math.random();
   let sent= forceNeg?'neg':(r<0.45?'pos':r<0.72?'neu':'neg');
-  const txt= sent==='pos'?rnd(POS):sent==='neu'?rnd(NEU):rnd(NEG);
-  const author= isX?rnd(HANDLES):rnd(PORTALES);
-  const reach= isX?ri(200,48000):ri(5000,250000);
-  return {isX,sent,txt,author,reach,t:Date.now(),id:Math.random()};
+  let txt= sent==='pos'?rnd(POS):sent==='neu'?rnd(NEU):rnd(NEG);
+  // inyectar un término de interés en parte de las menciones
+  if(TERMS.length && Math.random()<0.6){txt=txt.replace(/[.!]$/,'')+' — '+rnd(TERMS).text;}
+  const reach= src.platform==='x'?ri(200,48000):src.platform==='portal'||src.platform==='rss'?ri(5000,250000):ri(800,120000);
+  return {src,sent,txt,reach,t:Date.now(),id:Math.random()};
 }
 function badge(s){return s==='pos'?'<span class="badge b-pos">Positivo</span>':s==='neg'?'<span class="badge b-neg">Negativo</span>':'<span class="badge b-neu">Neutro</span>';}
 function fmtReach(n){return n>=1000?(n/1000).toFixed(1).replace('.0','')+'K':n;}
 
 function renderFeed(){
-  const items=feedItems.filter(m=>!searchTerm || (m.txt+' '+m.author).toLowerCase().includes(searchTerm));
-  elFeed.innerHTML=items.slice(0,40).map(m=>`
+  const items=feedItems.filter(m=>!searchTerm || (m.txt+' '+m.src.value).toLowerCase().includes(searchTerm));
+  elFeed.innerHTML=items.slice(0,40).map(m=>{
+    const pm=PLATFORMS[m.src.platform]||PLATFORMS.portal;
+    return `
     <div class="item ${m.spike?'neg-spike':''}">
-      <div class="src ${m.isX?'x':'news'}">${m.isX?'X':'📰'}</div>
+      <div class="src" style="background:${pm.color}">${pm.ico}</div>
       <div class="body">
-        <div class="head"><b>${m.isX?m.author:m.author}</b>${m.isX?`<span class="handle"> · X (Twitter)</span>`:`<span class="handle"> · Portal de noticias</span>`} ${badge(m.sent)}</div>
+        <div class="head"><b>${m.src.value}</b><span class="handle"> · ${pm.label}</span> ${badge(m.sent)}</div>
         <div class="txt">${m.txt}</div>
       </div>
       <div class="meta">hace ${Math.max(1,Math.round((Date.now()-m.t)/1000))}s
         <span class="reach">${fmtReach(m.reach)} alcance</span></div>
-    </div>`).join('');
+    </div>`;}).join('');
 }
 
 function pushMention(m){feedItems.unshift(m);if(feedItems.length>120)feedItems.pop();}
@@ -460,8 +558,8 @@ function realtime(){
   // menciones al feed
   const n=ri(1,3);
   for(let i=0;i<n;i++){const m=makeMention(burstNeg && i===0);if(burstNeg&&i===0)m.spike=true;pushMention(m);}
-  // incrementar hashtags
-  HASHTAGS.forEach(h=>kwCounts[h]+=ri(0,8));
+  // incrementar conteo de términos de interés
+  TERMS.forEach(t=>{kwCounts[t.text]=(kwCounts[t.text]||ri(40,200))+ri(0,8);});
 
   checkCrisis();
   renderAll();
@@ -476,7 +574,54 @@ document.querySelectorAll('#range .chip').forEach(c=>c.onclick=()=>{
 // búsqueda
 document.getElementById('search').addEventListener('input',e=>{searchTerm=e.target.value.toLowerCase().trim();renderFeed();});
 
+// ---------- Centro de monitoreo: render + handlers ----------
+function renderTerms(){
+  document.getElementById('term-count').textContent=TERMS.length;
+  const box=document.getElementById('term-chips');
+  box.innerHTML=TERMS.length
+    ? TERMS.map((t,i)=>`<span class="chip-term tt-${t.type}"><b>${TERM_TYPES[t.type]||'Tema'}</b>${t.text}<span class="del" data-i="${i}" title="Eliminar">×</span></span>`).join('')
+    : '<span class="cfg-empty">Sin términos aún. Agrega temas, personas o marcas a vigilar.</span>';
+  box.querySelectorAll('.del').forEach(d=>d.onclick=()=>removeTerm(+d.dataset.i));
+}
+function renderSources(){
+  document.getElementById('src-count').textContent=SOURCES.length;
+  const box=document.getElementById('src-list');
+  box.innerHTML=SOURCES.length
+    ? SOURCES.map((s,i)=>{const pm=PLATFORMS[s.platform]||PLATFORMS.portal;
+        return `<div class="src-row"><span class="src-ico" style="background:${pm.color}">${pm.ico}</span><span class="src-val">${s.value}</span><span class="src-plat">${pm.label}</span><span class="del" data-i="${i}" title="Eliminar">×</span></div>`;}).join('')
+    : '<div class="cfg-empty">Sin fuentes aún. Agrega portales, RSS o cuentas de redes.</div>';
+  box.querySelectorAll('.del').forEach(d=>d.onclick=()=>removeSource(+d.dataset.i));
+}
+function addTerm(){
+  const inp=document.getElementById('term-input'), val=inp.value.trim();
+  if(!val)return;
+  if(!TERMS.some(t=>t.text.toLowerCase()===val.toLowerCase())){
+    TERMS.push({text:val,type:document.getElementById('term-type').value});
+    kwCounts[val]=ri(40,300); saveCfg(); renderTerms(); renderKW(); renderKPIs();
+  }
+  inp.value=''; inp.focus();
+}
+function removeTerm(i){const t=TERMS[i]; if(!t)return; delete kwCounts[t.text]; TERMS.splice(i,1); saveCfg(); renderTerms(); renderKW();}
+function addSource(){
+  const inp=document.getElementById('src-input'), plat=document.getElementById('src-platform').value, val=inp.value.trim();
+  if(!val)return;
+  if(!SOURCES.some(s=>s.value.toLowerCase()===val.toLowerCase() && s.platform===plat)){
+    SOURCES.push({value:val,platform:plat}); saveCfg(); renderSources(); renderKPIs();
+  }
+  inp.value=''; inp.focus();
+}
+function removeSource(i){SOURCES.splice(i,1); saveCfg(); renderSources(); renderKPIs();}
+
+document.getElementById('term-add').onclick=addTerm;
+document.getElementById('term-input').addEventListener('keydown',e=>{if(e.key==='Enter')addTerm();});
+document.getElementById('src-add').onclick=addSource;
+document.getElementById('src-input').addEventListener('keydown',e=>{if(e.key==='Enter')addSource();});
+document.getElementById('src-platform').addEventListener('change',e=>{
+  document.getElementById('src-input').placeholder=(PLATFORMS[e.target.value]||{}).ph||'';
+});
+
 // arranque
+renderTerms(); renderSources();
 for(let i=0;i<12;i++)pushMention(makeMention(false));
 renderAll();
 setInterval(realtime,5000);
